@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syntax Smash | Cyberpunk Coding Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Orbitron:wght@400;700;900&display=swap">
+</head>
+
+<body>
+    <div class="scanlines"></div>
+    <div class="glow-overlay"></div>
+
+    <main class="game-container">
+        <!-- Login Screen -->
+        <section id="login-screen" class="screen active">
+            <h1 class="glitch" data-text="SYNTAX SMASH">SYNTAX SMASH</h1>
+            <p class="subtitle">IDENTIFY YOURSELF</p>
+
+            <div class="login-form">
+                <input type="text" id="player-name" placeholder="ENTER USERNAME..." autocomplete="off">
+                <div class="role-selection" id="role-selection">
+                    <button class="role-btn student" onclick="selectRole('STUDENT')">
+                        <span class="icon">🎓</span> STUDENT
+                    </button>
+                    <button class="role-btn teacher" onclick="showPasswordInput()">
+                        <span class="icon">👨‍🏫</span> TEACHER
+                    </button>
+                </div>
+
+                <div id="password-container" class="hidden">
+                    <input type="password" id="admin-pass" placeholder="ENTER PASSWORD..." autocomplete="off">
+                    <div class="auth-controls">
+                        <button class="cyber-btn small" onclick="verifyPassword()">UNLOCK</button>
+                        <button class="cancel-btn" onclick="cancelLogin()">CANCEL</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Briefing -->
+        <section id="start-screen" class="screen hidden">
+            <h1 class="glitch" id="welcome-title">WELCOME PLAYER</h1>
+            <p class="subtitle" id="welcome-msg">SYSTEM READY</p>
+            <div class="briefing-controls">
+                <button id="start-btn" class="cyber-btn">
+                    <span class="btn-content">INITIALIZE SYSTEM</span>
+                    <span class="btn-glitch"></span>
+                </button>
+                <button id="lb-btn" class="cyber-btn hidden" onclick="showLeaderboard()">
+                    <span class="btn-content">VIEW SCORES</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Leaderboard Screen -->
+        <section id="leaderboard-screen" class="screen hidden">
+            <h2 class="neon-text">TOP HACKERS</h2>
+            <div class="leaderboard-container">
+                <table id="scores-table">
+                    <thead>
+                        <tr>
+                            <th>RANK</th>
+                            <th>HACKER</th>
+                            <th>SCORE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scores-body">
+                        <!-- Scores injected here -->
+                    </tbody>
+                </table>
+            </div>
+            <button class="cyber-btn" onclick="switchScreen('login')">RETURN</button>
+        </section>
+
+        <!-- Game Interface -->
+        <section id="game-screen" class="screen hidden">
+            <header class="hud">
+                <div class="score-box">
+                    <span class="label">SCORE</span>
+                    <span id="score" class="value">0000</span>
+                </div>
+                <div class="level-box">
+                    <span class="label">LEVEL</span>
+                    <span id="level" class="value">01</span>
+                </div>
+                <div class="streak-box">
+                    <span class="label">STREAK</span>
+                    <span id="streak" class="value">x0</span>
+                </div>
+            </header>
+
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <div class="dots">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                    <span class="filename">broken_script.py</span>
+                </div>
+                <div class="code-area">
+                    <pre><code id="code-display">Loading sequence...</code></pre>
+                </div>
+                <div class="status-bar">
+                    <span id="status-msg">DETECTING ERROR...</span>
+                </div>
+            </div>
+
+            <div class="control-panel">
+                <p class="prompt">> SELECT PATCH_COMMAND:</p>
+                <div id="options-grid" class="options-grid">
+                    <!-- Options injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Game Over Screen -->
+        <section id="end-screen" class="screen hidden">
+            <h2 class="neon-text">SYSTEM TERMINATED</h2>
+            <div class="final-stats">
+                <p>FINAL SCORE: <span id="final-score">0</span></p>
+                <p>BUGS SMASHED: <span id="bugs-smashed">0</span></p>
+            </div>
+            <button id="restart-btn" class="cyber-btn">
+                <span class="btn-content">REBOOT SYSTEM</span>
+            </button>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

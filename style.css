@@ -1,0 +1,518 @@
+:root {
+    --bg-color: #050510;
+    --terminal-bg: #0a0a14d0;
+    --neon-green: #00ff9d;
+    --neon-blue: #00d2ff;
+    --neon-pink: #ff0055;
+    --neon-red: #ff3333;
+    --neon-purple: #bd00ff;
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --font-ui: 'Orbitron', sans-serif;
+    --font-code: 'Fira Code', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: #fff;
+    font-family: var(--font-ui);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImEiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTTAgNDBMMTQwIDBIMHoiIGZpbGw9IiMzMzMiIGZpbGwtb3BhY2l0eT0iMC4wNSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNhKSIvPjwvc3ZnPg==');
+}
+
+/* Background Effects */
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(0deg,
+            rgba(0, 0, 0, 0) 0px,
+            rgba(0, 0, 0, 0) 1px,
+            rgba(0, 255, 157, 0.03) 2px,
+            rgba(0, 255, 157, 0.03) 3px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.glow-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 210, 255, 0.1), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Main Container */
+.game-container {
+    position: relative;
+    width: 90%;
+    max-width: 900px;
+    z-index: 10;
+}
+
+.screen {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.hidden {
+    display: none;
+    opacity: 0;
+}
+
+.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Start Screen & Login & Leaderboard */
+#start-screen,
+#login-screen,
+#leaderboard-screen {
+    text-align: center;
+}
+
+h1.glitch {
+    font-size: 5rem;
+    color: var(--neon-green);
+    text-shadow: 0 0 20px var(--neon-green), 0 0 40px var(--neon-green);
+    position: relative;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        text-shadow: 0 0 20px var(--neon-green), 0 0 50px var(--neon-green);
+    }
+
+    50% {
+        text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
+        opacity: 0.8;
+    }
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 3rem;
+    color: #aaa;
+}
+
+.highlight {
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px var(--neon-blue);
+}
+
+/* Login Form Styles */
+.login-form {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 2rem;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    display: inline-block;
+    border-radius: 10px;
+}
+
+#player-name,
+#admin-pass {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--neon-blue);
+    color: white;
+    font-family: var(--font-ui);
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+#admin-pass {
+    border-bottom-color: var(--neon-purple);
+    font-family: monospace;
+    letter-spacing: 5px;
+}
+
+#player-name:focus {
+    border-bottom-color: var(--neon-pink);
+    box-shadow: 0 10px 20px -10px var(--neon-pink);
+}
+
+#admin-pass:focus {
+    box-shadow: 0 10px 20px -10px var(--neon-purple);
+}
+
+.role-selection {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.role-btn {
+    background: transparent;
+    border: 2px solid #555;
+    color: #888;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    font-family: var(--font-ui);
+    font-size: 1.2rem;
+    transition: all 0.3s;
+    border-radius: 4px;
+}
+
+.role-btn:hover {
+    transform: translateY(-5px);
+}
+
+.role-btn.student:hover {
+    border-color: var(--neon-blue);
+    color: var(--neon-blue);
+    box-shadow: 0 0 20px var(--neon-blue);
+}
+
+.role-btn.teacher:hover {
+    border-color: var(--neon-purple);
+    color: var(--neon-purple);
+    box-shadow: 0 0 20px var(--neon-purple);
+}
+
+/* Password UI */
+#password-container {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.auth-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.cancel-btn {
+    background: transparent;
+    border: 1px solid #555;
+    color: #888;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-family: var(--font-ui);
+    transition: 0.2s;
+}
+
+.cancel-btn:hover {
+    color: #fff;
+    border-color: #fff;
+}
+
+/* Briefing Controls */
+.briefing-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* Buttons */
+.cyber-btn {
+    background: transparent;
+    border: 2px solid var(--neon-green);
+    color: var(--neon-green);
+    font-family: var(--font-ui);
+    font-size: 1.2rem;
+    padding: 1rem 3rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.cyber-btn.small {
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    border-color: var(--neon-purple);
+    color: var(--neon-purple);
+}
+
+.cyber-btn.small:hover {
+    background: var(--neon-purple);
+    color: #fff;
+    box-shadow: 0 0 15px var(--neon-purple);
+}
+
+.cyber-btn:hover {
+    background: var(--neon-green);
+    color: #000;
+    box-shadow: 0 0 20px var(--neon-green);
+}
+
+.cyber-btn:active {
+    transform: scale(0.98);
+}
+
+/* Leaderboard Styles */
+.leaderboard-container {
+    margin: 2rem auto;
+    max-width: 600px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--neon-green);
+    padding: 1rem;
+    border-radius: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-code);
+}
+
+th {
+    color: var(--neon-pink);
+    border-bottom: 2px solid var(--glass-border);
+    padding: 1rem;
+}
+
+td {
+    padding: 0.8rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+tr:hover {
+    background: rgba(0, 255, 157, 0.1);
+}
+
+/* Game Interface HUD */
+.hud {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    text-shadow: 0 0 5px var(--neon-blue);
+}
+
+.score-box,
+.level-box,
+.streak-box {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0.5rem 1.5rem;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(5px);
+    border-radius: 4px;
+}
+
+.label {
+    color: var(--neon-blue);
+    margin-right: 10px;
+    font-size: 0.8rem;
+}
+
+.value {
+    color: white;
+    font-weight: bold;
+}
+
+/* Terminal Window */
+.terminal-window {
+    background: var(--terminal-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    margin-bottom: 2rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.terminal-header {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.8rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.dots {
+    display: flex;
+    gap: 8px;
+    margin-right: 15px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.red {
+    background: #ff5f56;
+}
+
+.yellow {
+    background: #ffbd2e;
+}
+
+.green {
+    background: #27c93f;
+}
+
+.filename {
+    font-family: var(--font-code);
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.code-area {
+    padding: 2rem;
+    text-align: left;
+}
+
+pre {
+    margin: 0;
+}
+
+code {
+    font-family: var(--font-code);
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #e0e0e0;
+}
+
+.status-bar {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.5rem;
+    text-align: right;
+    font-family: var(--font-code);
+    font-size: 0.8rem;
+    color: var(--neon-red);
+}
+
+/* Syntax Highlighting Sim */
+.python-def {
+    color: #f92672;
+}
+
+.python-func {
+    color: #66d9ef;
+}
+
+.python-str {
+    color: #e6db74;
+}
+
+.python-comment {
+    color: #75715e;
+}
+
+.python-error {
+    background: rgba(255, 0, 85, 0.3);
+    border-bottom: 2px wavy var(--neon-red);
+    color: #fff;
+}
+
+/* Control Panel */
+.prompt {
+    font-family: var(--font-code);
+    margin-bottom: 1rem;
+    color: var(--neon-blue);
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.option-btn {
+    background: rgba(0, 255, 157, 0.1);
+    border: 1px solid var(--neon-green);
+    color: #fff;
+    padding: 1rem;
+    font-family: var(--font-code);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    position: relative;
+}
+
+.option-btn:hover {
+    background: rgba(0, 255, 157, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 157, 0.2);
+}
+
+.option-btn.correct {
+    background: var(--neon-green);
+    color: #000;
+    box-shadow: 0 0 20px var(--neon-green);
+}
+
+.option-btn.wrong {
+    background: var(--neon-red);
+    border-color: var(--neon-red);
+    box-shadow: 0 0 20px var(--neon-red);
+    animation: shake 0.4s;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+/* End Screen */
+#end-screen h2 {
+    font-size: 3rem;
+    color: var(--neon-red);
+    margin-bottom: 2rem;
+}
+
+.final-stats {
+    font-size: 1.5rem;
+    margin-bottom: 3rem;
+    line-height: 2;
+}
+
+.final-stats span {
+    color: var(--neon-green);
+}
