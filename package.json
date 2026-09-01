@@ -1,0 +1,15 @@
+{
+  "name": "syntax-smash",
+  "version": "1.0.0",
+  "description": "Cyberpunk Coding Quiz Game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "keywords": ["game", "quiz", "cyberpunk", "coding"],
+  "author": "sathiyamoorthy",
+  "license": "MIT"
+}
